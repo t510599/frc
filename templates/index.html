@@ -171,7 +171,7 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             var dataBlob = canvas.toBlob((blob) => {
                 formData = new FormData();
-                formData.append('file', blob, "camara.png");
+                formData.append('file', blob, "camera.png");
                 captured = true;
             });
         });
@@ -209,7 +209,7 @@
                 axios.request({
                     method: "PUT",
                     data: formData,
-                    url: "/api/upload"
+                    url: "/api/train"
                 }).then((res) => {
                     if (res.data.status == "succeed") {
                         snackbar('上傳成功！');

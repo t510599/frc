@@ -1,4 +1,4 @@
-from face_recognition import face_locations, face_encodings, face_distance
+from face_recognition import face_locations, face_encodings, face_distance, load_image_file
 from cv2 import resize
 from numpy import argmin
 class NoFaceDetectedError(Exception):
@@ -7,7 +7,8 @@ class NoFaceDetectedError(Exception):
 #input: an image that contains exactly one face
 #output: the encoding of that face
 #exception: if no face detected, raise NoFaceDetectedError
-def train(image):
+def train(file_stream):
+	image = load_image_file(file_stream)
 	location = face_locations(image)
 	if not location:
 		raise NoFaceDetectedError()
@@ -18,7 +19,6 @@ def train(image):
 #input: a dictionary represent the encodings we knew
 #output: a tuple with format (top, right, bottom, left, name)
 def identify(image, known_dict):
-	image = resize(image, (0, 0), fx=0.25, fy=0.25)
 	locations = face_locations(image)
 	if not locations:
 		print('no location')

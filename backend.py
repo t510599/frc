@@ -9,12 +9,6 @@ ft.loadFontData("./edukai-3.ttf", 0)
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-encodings = dict()
-with open('encodings.pickle', 'rb') as f:
-    encodings = pickle.load(f)
-# make sure singleton
-VideoCamera.get_camera()
-
 class VideoCamera:
     _camera = None
     @classmethod
@@ -78,3 +72,15 @@ def train():
 def identify():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+if __name__ == '__main__':
+    encodings = dict()
+    try:
+        with open('encodings.pickle', 'rb') as f:
+            encodings = pickle.load(f)
+    except:
+        #file not found
+        #skip it
+        pass
+    # make sure singleton
+    VideoCamera.get_camera()
+    app.run(host='0.0.0.0', debug=True)

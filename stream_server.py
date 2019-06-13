@@ -104,7 +104,7 @@ def identify():
 def predict():
     return Response(identify(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-if __name__ == '__main__':
+if ＿__name＿__ == '__main__':
     #we need to init camera here because the singleton here is not thread safe
     VideoCamera.get_camera()
     app.run(host='0.0.0.0', debug=True)

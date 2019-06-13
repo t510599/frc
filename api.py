@@ -25,8 +25,9 @@ def identify(image, known_dict):
 	unknown_encoding = face_encodings(image, [locations])[0]
 	distances = face_distance(list(known_dict.values()), unknown_encoding)
 	index = argmin(distances)
+	pos = (location[0], location[1], location[2], location[3])
 	if distances[index] <= 0.4:
-		return (location[0], location[1], location[2], location[3], list(known_dict.keys())[index])
+		return (pos, list(known_dict.keys())[index])
 	else:
-		return (location[0], location[1], location[2], location[3], "unknown")
+		return (pos, "unknown")
 

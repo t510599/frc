@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div class="ts fluid borderless bottom attached center aligned tertiary segment">
-                <img src="{{ url_for('identify') }}">
+                <img src="/api/identify" id="stream">
             </div>
         </div>
     </div>
@@ -107,6 +107,8 @@
         var captured = false;
         var video = $('video');
         var videoStream;
+
+        var streamSource = $('#stream').src;
 
         var canvas = $('canvas');
 
@@ -135,7 +137,13 @@
             cameraEnabled = true;
         }
 
-        click('.item[data-tab="show"]', (e) => { stopVideo() });
+        click('.item[data-tab="train"]', (e) => {
+            $('#stream').src = ""; // release cam
+        });
+        click('.item[data-tab="show"]', (e) => {
+            $('#stream').src = streamSource;
+            stopVideo();
+        });
         click('#canvasContainer .close.button', (e) => {
             let ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);

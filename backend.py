@@ -1,6 +1,6 @@
 from flask import *
 import cv2
-from api import *
+import api
 import pickle
 
 ft = cv2.freetype.createFreeType2()
@@ -44,7 +44,7 @@ def mark_face(image, name, pos):
 def gen():
     while True:
         frame = VideoCamera.get_camera().get_frame()
-        pos, name = identify(frame, encodings)
+        pos, name = api.identify(frame, encodings)
         mark_face(frame, name, pos)
         ret, jpeg = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\n'
@@ -52,7 +52,8 @@ def gen():
 
 @app.route('/')
 def index():
-    render_template('index.html')
+    with open('templates/index.html', 'r') as f:
+        return f.read()
 
 @app.route('/api/train', methods=['PUT'])
 def train():
@@ -62,7 +63,7 @@ def train():
         return jsonify({'status': 'failed', 'error': 'no_name'}), 400
     file = list(request.files.values())[0]
     name = request.form['name']
-    encoding = train(file)
+    encoding = api.train(file)
     encodings[name] = encoding
     with open('encodings.pickle', 'wb') as f:
         pickle.dump(encodings, f)

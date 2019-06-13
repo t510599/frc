@@ -44,8 +44,11 @@ def mark_face(image, name, pos):
 def gen():
     while True:
         frame = VideoCamera.get_camera().get_frame()
-        pos, name = api.identify(frame, encodings)
-        mark_face(frame, name, pos)
+        try:
+            pos, name = api.identify(frame, encodings)
+            mark_face(frame, name, pos)
+        except api.NoFaceDetectedError:
+            print('No face found')
         ret, jpeg = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
@@ -54,6 +57,7 @@ def gen():
 def index():
     with open('templates/index.html', 'r') as f:
         return f.read()
+    # render_template('index.html')
 
 @app.route('/api/train', methods=['PUT'])
 def train():
@@ -63,7 +67,10 @@ def train():
         return jsonify({'status': 'failed', 'error': 'no_name'}), 400
     file = list(request.files.values())[0]
     name = request.form['name']
-    encoding = api.train(file)
+    try:
+        encoding = api.train(file)
+    except api.NoFaceDetectedError:
+        print('No face found')
     encodings[name] = encoding
     with open('encodings.pickle', 'wb') as f:
         pickle.dump(encodings, f)

@@ -19,13 +19,16 @@ def train(image):
 #output: a tuple with format (top, right, bottom, left, name)
 def identify(image, known_dict):
 	image = resize(image, (0, 0), fx=0.25, fy=0.25)
-	locations = face_locations(image)[0]
+	locations = face_locations(image)
 	if not locations:
+		print('no location')
 		raise NoFaceDetectedError()
-	unknown_encoding = face_encodings(image, [locations])[0]
+	unknown_encoding = face_encodings(image, locations)[0]
+	pos = (locations[0][0], locations[0][1], locations[0][2], locations[0][3])
 	distances = face_distance(list(known_dict.values()), unknown_encoding)
+	if not distances:
+		return (pos, "unknown")
 	index = argmin(distances)
-	pos = (location[0], location[1], location[2], location[3])
 	if distances[index] <= 0.4:
 		return (pos, list(known_dict.keys())[index])
 	else:

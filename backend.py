@@ -61,7 +61,7 @@ def index():
     render_template('index.html')
 
 @app.route('/api/train', methods=['PUT'])
-def train:
+def train():
     if not request.files:
         return jsonify({'status': 'failed', 'error': 'no_file'}), 400
     if not 'name' in request.form:
@@ -75,6 +75,6 @@ def train:
     return jsonify({'status: succeed'})
 
 @app.route('/api/identify')
-def identify:
+def identify():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 

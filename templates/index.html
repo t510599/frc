@@ -202,8 +202,16 @@
                     data: formData,
                     url: "/api/upload"
                 }).then((res) => {
-                    switch (res.message) {
-                        case "success":
+                    if (res.data.status == "succeed") {
+                        snackbar('上傳成功！');
+                    }
+
+                    switch (res.data.message) {
+                        case "no_file":
+                            snackbar('沒有檔案。');
+                            break;
+                        case "no_name":
+                            snackbar('沒有名字。');
                             break;
                     }
                 }).catch((err) => {

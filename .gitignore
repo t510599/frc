@@ -2,3 +2,4 @@ upload/*.png
 __pycache__/
 __pycache__/*.pyc
 encodings.pickle
+/train

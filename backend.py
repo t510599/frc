@@ -7,7 +7,7 @@ import os.path as path
 ft = cv2.freetype.createFreeType2()
 ft.loadFontData("./edukai-3.ttf", 0)
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='assets')
 app.config['JSON_AS_ASCII'] = False
 app.config['UPLOAD_FOLDER'] = "./upload"
 

@@ -143,6 +143,7 @@
 
         click('.item[data-tab="train"]', (e) => {
             $('#stream').src = ""; // release cam
+            $('#camera').checked = false;
         });
         click('.item[data-tab="show"]', (e) => {
             $('#stream').src = streamSource;

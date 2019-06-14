@@ -42,7 +42,6 @@ def mark_face(image, name, pos):
 def gen(camera):
     while True:
         frame = camera.get_frame()
-        print(frame)
         if frame is None:
             camera.refresh()
             continue
@@ -52,7 +51,6 @@ def gen(camera):
             mark_face(frame, name, pos)
         except api.NoFaceDetectedError:
             print('No face found')
-        frame = cv2.resize(frame, (0, 0), fx=2, fy=2)
         ret, jpeg = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
@@ -74,7 +72,7 @@ def train():
     try:
         encoding = api.train(file)
     except api.NoFaceDetectedError:
-        print('No face found')
+        pass
     encodings[name] = encoding
     with open('encodings.pickle', 'wb') as f:
         pickle.dump(encodings, f)

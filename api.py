@@ -21,7 +21,6 @@ def train(file_stream):
 def identify(image, known_dict):
 	locations = face_locations(image)
 	if not locations:
-		print('no location')
 		raise NoFaceDetectedError()
 	unknown_encoding = face_encodings(image, locations)[0]
 	pos = (locations[0][0], locations[0][1], locations[0][2], locations[0][3])

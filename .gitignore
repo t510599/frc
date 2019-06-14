@@ -1,1 +1,4 @@
-/train
+/upload/*
+__pycache__/
+__pycache__/*
+encodings.pickle

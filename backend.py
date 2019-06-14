@@ -2,12 +2,14 @@ from flask import *
 import cv2
 import api
 import pickle
+import os.path as path
 
 ft = cv2.freetype.createFreeType2()
 ft.loadFontData("./edukai-3.ttf", 0)
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
+app.config['UPLOAD_FOLDER'] = "./upload"
 
 class VideoCamera(object):
     def __init__(self):
@@ -69,6 +71,7 @@ def train():
         return jsonify({'status': 'failed', 'error': 'no_name'}), 400
     file = request.files['file']
     name = request.form['name']
+    file.save(path.join(app.config['UPLOAD_FOLDER'], name+".png"))
     try:
         encoding = api.train(file)
     except api.NoFaceDetectedError:

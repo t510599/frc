@@ -52,7 +52,7 @@ def gen(camera):
             pos, name = api.identify(frame, encodings)
             mark_face(frame, name, pos)
         except api.NoFaceDetectedError:
-            print('No face found')
+            pass
         ret, jpeg = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
